@@ -16,10 +16,10 @@ export default class Orphanage {
 	name: string;
 
 	@Column()
-	latitude: number;
+	latitude: string;
 
 	@Column()
-	longitude: number;
+	longitude: string;
 
 	@Column()
 	about: string;
@@ -32,6 +32,9 @@ export default class Orphanage {
 
 	@Column()
 	open_on_weekends: true;
+
+	@Column()
+	status: string;
 
 	@OneToMany(() => Images, (image) => image.orphanage, {
 		cascade: ["insert", "update"],
