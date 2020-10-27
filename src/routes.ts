@@ -10,6 +10,11 @@ const upload = multer(uploadConfig);
 
 routes.get("/orphanages", OrphanagesController.index);
 routes.get("/orphanages/:id", OrphanagesController.show);
+routes.get("/orphanages_pendent", OrphanagesController.showPendent);
+routes.get("/orphanages_aproved", OrphanagesController.showAproved);
+routes.post("/orphanage_aproved/:id", OrphanagesController.aprove);
+
+routes.delete("/orphanages/:id", OrphanagesController.delete);
 routes.post("/orphanages", upload.array("images"), OrphanagesController.create);
 routes.put("/orphanages", upload.array("images"), OrphanagesController.update);
 

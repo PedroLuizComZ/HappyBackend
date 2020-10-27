@@ -28,6 +28,28 @@ export default {
 		return response.json(orphanageView.render(orphanage));
 	},
 
+	async showAproved(request: Request, response: Response) {
+		const orphanagesRepository = getRepository(Orphanage);
+
+		const orphanages = await orphanagesRepository
+			.createQueryBuilder("orphanages")
+			.where("status = :status", { status: "apr" })
+			.getMany();
+
+		return response.json(orphanages);
+	},
+
+	async showPendent(request: Request, response: Response) {
+		const orphanagesRepository = getRepository(Orphanage);
+
+		const orphanages = await orphanagesRepository
+			.createQueryBuilder("orphanages")
+			.where("status = :status", { status: "pen" })
+			.getMany();
+
+		return response.json(orphanages);
+	},
+
 	async create(request: Request, response: Response) {
 		const {
 			name,
@@ -137,5 +159,34 @@ export default {
 		await orphanagesRepository.update(id, data);
 
 		return response.status(201).json(data);
+	},
+
+	async delete(request: Request, response: Response) {
+		const { id } = request.params;
+
+		const orphanagesRepository = getRepository(Orphanage);
+
+		await orphanagesRepository
+			.createQueryBuilder("orphanages")
+			.delete()
+			.where("id = :id", { id: id })
+			.execute();
+
+		return response.status(201).json({ message: "Orphanage deleted" });
+	},
+
+	async aprove(request: Request, response: Response) {
+		const { id } = request.params;
+
+		const orphanagesRepository = getRepository(Orphanage);
+
+		await orphanagesRepository
+			.createQueryBuilder()
+			.update("orphanages")
+			.set({ status: "apr" })
+			.where("id = :id", { id: id })
+			.execute();
+
+		return response.json({ message: "Orfanage aproved" });
 	},
 };
